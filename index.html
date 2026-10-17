@@ -93,8 +93,7 @@
       gap: 10px; 
       padding-bottom: 5px; 
       -webkit-overflow-scrolling: touch; 
-      border-bottom: 3px solid #8FA382;
-
+      
     }
    
 
@@ -137,7 +136,7 @@
   gtag('js', new Date());
 
   gtag('config', 'G-L9XZT8BWMX');
-  
+
 </script>
 
 </head>
@@ -226,7 +225,9 @@
       { id: 1, titulo: "Look Dark Academia", loja: "shein", estilo: "Dark Academia", peca: "Look Completo", preco: "R$ 145,90", imagem: "https://via.placeholder.com/150", link: "#" },
       { id: 2, titulo: "Bota Tratorada", loja: "shopee", estilo: "Grunge", peca: "Bota", preco: "R$ 89,90", imagem: "https://via.placeholder.com/150", link: "#" },
       { id: 3, titulo: "Saia Plissada Rosa", loja: "shein", estilo: "Coquette", peca: "Saia", preco: "R$ 54,00", imagem: "https://via.placeholder.com/150", link: "#" },
-      { id: 4, titulo: "Conjunto Y2K", loja: "shopee", estilo: "Y2K", peca: "Look Completo", preco: "R$ 110,50", imagem: "https://via.placeholder.com/150", link: "#" }
+      { id: 4, titulo: "Conjunto Y2K", loja: "shopee", estilo: "Y2K", peca: "Look Completo", preco: "R$ 110,50", imagem: "https://via.placeholder.com/150", link: "#" },
+      { id: 5, titulo: "Jaqueta de Couro", loja: "shein", estilo: "Dark Academia", peca: "Jaqueta", preco: "R$ 199,90", imagem: "https://via.placeholder.com/150", link: "https://br.shein.com/DAZY-Women-s-Loose-Casual-Leather-Jacket%2C-Regular-Fit-Outerwear%2C-New-For-Autumn-Winter-p-561214210-cat-1735.html?campaign_id=20&url_from=affiliate_koc_4137664850&requestId=e068e968730227c2&ici=s1%60EditSearch%60RPD62S9%60_fb%60d1%60PageOthers&search_redir=1&search_words=RPD62S9&src_identifier=st%3D2%60sc%3DRPD62S9%60sr%3D0%60ps%3D1&src_module=search&src_tab_page_id=page_home1792207805542" }
+
     ];
 
     const listaDeEstilos = ["Y2K", "Coquette", "Kawaii", "Fairycore", "Dark Academia", "Grunge"].sort();
@@ -255,7 +256,7 @@
             <h3 style="font-size: 13px; margin-bottom: 2px; line-height: 1.2;">${produto.titulo}</h3>
             <span style="font-size: 11px; color: var(--cor-texto-secundario); margin-bottom: 6px; text-transform: capitalize;">${produto.loja}</span>
             <span style="font-size: 14px; font-weight: bold; color: var(--cor-preco); margin-bottom: 10px; margin-top: auto;">${produto.preco}</span>
-            <a href="${produto.link}" style="background: var(--cor-primaria); color: white; text-align: center; padding: 8px; border-radius: 10px; text-decoration: none; font-size: 12px; font-weight: bold;">Comprar ↗</a>
+            <a href="${produto.link}" target="_blank" rel="noopener noreferrer" style="background: var(--cor-primaria); color: white; text-align: center; padding: 8px; border-radius: 10px; text-decoration: none; font-size: 12px; font-weight: bold;">Comprar ↗</a>
           </div>
         `;
       });

@@ -132,6 +132,11 @@
       flex: 1; padding: 10px; border-radius: 12px; border: 1px solid #ddd;
       background-color: white; color: var(--cor-texto); outline: none; cursor: pointer; font-size: 13px; font-weight: 500;
     }
+    .select-personalizado  option {
+      background-color: #F8F8F8; 
+      color: var(--cor-analoga);
+      font-weight: 700;
+    }
 
     /* ==========================================
        BARRA DE BUSCA EMBUTIDA
@@ -181,6 +186,12 @@
     }
     .select-embutido:hover {
       color: var(--cor-analoga-hover);
+    }
+
+    .select-embutido option {
+      background-color: #F8F8F8; /* Mesma cor de fundo da barrinha de busca */
+      color: var(--cor-analoga); /* Usa a sua cor dourada/analoga */
+      font-weight: 700;
     }
 
     /* ==========================================
@@ -236,6 +247,8 @@
       color: var(--cor-analoga-hover);
       border-color: var(--cor-analoga-hover); 
     }
+
+    
 
     /* ==========================================
        DESIGN RESPONSIVO (TABLETS E PCs)

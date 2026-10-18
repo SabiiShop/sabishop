@@ -236,6 +236,41 @@
       color: var(--cor-analoga-hover);
       border-color: var(--cor-analoga-hover); 
     }
+
+    /* ==========================================
+       DESIGN RESPONSIVO (TABLETS E PCs)
+       ========================================== */
+    
+    /* Quando o ecrã for maior que 768px (Tablets e monitores pequenos) */
+    @media (min-width: 768px) {
+      .app-container {
+        max-width: 800px; /* Alarga a loja */
+        border-radius: 20px;
+        margin-top: 40px; /* Descola do topo da janela */
+        margin-bottom: 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      }
+
+      .cabecalho {
+        border-radius: 20px 20px 0 0;
+      }
+
+      #vitrine-produtos {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 20px !important;
+      }
+    }
+
+    /* Quando for um monitor ainda maior (pc) */
+    @media (min-width: 1024px) {
+      .app-container {
+        max-width: 1000px;
+      }
+
+      #vitrine-produtos {
+        grid-template-columns: repeat(4, 1fr) !important;
+      }
+    }
   </style>
 
   <!-- Google tag (gtag.js) -->

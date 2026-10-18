@@ -34,7 +34,9 @@
        ========================================== */
     .banner {
       height: 140px;
-      background-color: var(--cor-primaria);
+      background-image: url("banner.jfif");
+      background-size: cover;
+      background-position: center; 
     }
 
     .cabecalho {
@@ -126,6 +128,46 @@
       flex: 1; padding: 10px; border-radius: 12px; border: 1px solid #ddd;
       background-color: white; color: var(--cor-texto); outline: none; cursor: pointer; font-size: 13px; font-weight: 500;
     }
+
+    /* ==========================================
+       BARRA DE BUSCA EMBUTIDA
+       ========================================== */
+    .barra-busca-wrapper {
+      display: flex;
+      align-items: center;
+      background-color: #F8F8F8;
+      border: 1px solid #E5E5E5;
+      border-radius: 24px;
+      padding: 4px 16px;
+      width: 100%;
+    }
+    
+    #barra-busca {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      padding: 8px 0 8px 8px;
+      font-size: 14px;
+      color: var(--cor-texto);
+    }
+    
+    .divisor {
+      width: 1px;
+      height: 20px;
+      background-color: #D1D1D1;
+      margin: 0 10px;
+    }
+    
+    .select-embutido {
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--cor-texto-secundario);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+    }
   </style>
 
   <!-- Google tag (gtag.js) -->
@@ -164,14 +206,21 @@
 
     <div class="conteudo">
       
-      <!-- ==========================================
+     <!-- ==========================================
            BARRA DE PESQUISA
            ========================================== -->
       <section style="margin-bottom: 20px; position: relative; z-index: 1;">
-        <div style="position: relative; display: flex; align-items: center;">
-          <span style="position: absolute; left: 16px; color: #999; font-size: 14px;">🔍︎</span>
-          <input type="text" id="barra-busca" placeholder="Buscar estilo ou produto..." 
-                 style="width: 100%; padding: 12px 16px 12px 40px; border-radius: 24px; border: 1px solid #E5E5E5; outline: none; background-color: #F8F8F8; font-size: 14px; color: var(--cor-texto);">
+        <div class="barra-busca-wrapper">
+          <span style="color: #999; font-size: 14px;">🔍︎</span>
+          <input type="text" id="barra-busca" placeholder="Buscar estilo ou produto...">
+          
+          <div class="divisor"></div>
+          
+          <select id="ordenar-produtos" class="select-embutido">
+            <option value="recentes">Mais Recentes</option>
+            <option value="menor-preco">Menor Preço</option>
+            <option value="maior-preco">Maior Preço</option>
+          </select>
         </div>
       </section>
 
@@ -263,14 +312,17 @@
     }
 
     const barraBusca = document.getElementById("barra-busca");
-    let lojaSelecionada = "todas"; 
+    const selectOrdenar = document.getElementById("ordenar-produtos");
+    let lojaSelecionada = "todas";
 
-    function aplicarFiltros() {
+   function aplicarFiltros() {
       const texto = barraBusca.value.toLowerCase();
       const peca = selectPeca.value;
       const estilo = selectEstilo.value;
+      const ordem = selectOrdenar.value; // Pega a ordem escolhida
 
-      const produtosFiltrados = achadinhos.filter(produto => {
+      // Usa 'let' em vez de 'const' pois a lista será reordenada depois
+      let produtosFiltrados = achadinhos.filter(produto => {
         const passaTexto = produto.titulo.toLowerCase().includes(texto);
         
         const passaLoja = (lojaSelecionada === "todas") || 
@@ -283,12 +335,31 @@
         return passaTexto && passaLoja && passaPeca && passaEstilo;
       });
 
+      // LÓGICA DE ORDENAÇÃO
+      if (ordem === "menor-preco") {
+        produtosFiltrados.sort((a, b) => {
+          // Limpa o texto "R$ 145,90" para o número 145.90
+          const precoA = parseFloat(a.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
+          const precoB = parseFloat(b.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
+          return precoA - precoB;
+        });
+      } else if (ordem === "maior-preco") {
+        produtosFiltrados.sort((a, b) => {
+          const precoA = parseFloat(a.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
+          const precoB = parseFloat(b.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
+          return precoB - precoA; // Invertido para maior preço
+        });
+      } else if (ordem === "recentes") {
+        produtosFiltrados.reverse();
+      }
+
       renderizarProdutos(produtosFiltrados);
     }
 
     barraBusca.addEventListener("input", aplicarFiltros);
     selectPeca.addEventListener("change", aplicarFiltros);
     selectEstilo.addEventListener("change", aplicarFiltros);
+    selectOrdenar.addEventListener("change", aplicarFiltros);
 
     document.querySelectorAll(".btn-filtro").forEach(botao => {
       botao.addEventListener("click", (evento) => {

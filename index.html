@@ -18,6 +18,8 @@
       --cor-texto-secundario: #888888;
       --cor-card: #FFFFFF;
       --cor-preco: #2E5C31; 
+      --cor-analoga:#A69F80;
+      --cor-analoga-hover: #BFB9A4;
     }
 
     /* ==========================================
@@ -36,7 +38,7 @@
       height: 140px;
       background-image: url("banner.jfif");
       background-size: cover;
-      background-position: center; 
+      background-position: top; 
     }
 
     .cabecalho {
@@ -117,11 +119,13 @@
       gap: 2px;
       
     }
-
     .btn-filtro.ativo { 
       background-color: var(--cor-primaria); 
       color: white; 
       border-color: var(--cor-primaria); 
+    }
+    .btn-filtro:hover:not(.ativo) {
+      background-color: rgba(143, 163, 130, 0.05); 
     }
 
     .select-personalizado {
@@ -162,11 +166,75 @@
     .select-embutido {
       border: none;
       outline: none;
-      background: transparent;
-      color: var(--cor-texto-secundario);
+      background-color: transparent;
+      color: var(--cor-analoga);
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 700;
       cursor: pointer;
+      appearance: none; 
+      -webkit-appearance: none;
+      padding-right: 18px;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A69F80' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right center;
+      background-size: 14px;
+    }
+    .select-embutido:hover {
+      color: var(--cor-analoga-hover);
+    }
+
+    /* ==========================================
+       LINHA DIVISÓRIA DOS FILTROS
+       ========================================== */
+   .separador-filtros {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #A3A3A3;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 8px 0;
+    }
+
+    .separador-filtros::before,
+    .separador-filtros::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px dashed #D1D1D1;
+    }
+
+    .separador-filtros::before {
+      margin-right: 12px;
+    }
+
+    .separador-filtros::after {
+      margin-left: 12px;
+    }
+
+    .select-personalizado {
+      flex: 1; 
+      padding: 10px 30px 10px 12px; 
+      border-radius: 12px; 
+      border: 1px solid #E5E5E5; 
+      background-color: var(--cor-card); 
+      color: var(--cor-analoga); 
+      outline: none; 
+      cursor: pointer; 
+      font-size: 13px; 
+      font-weight: 600; 
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A69F80' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center; 
+      background-size: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .select-personalizado:hover {
+      color: var(--cor-analoga-hover);
+      border-color: var(--cor-analoga-hover); 
     }
   </style>
 
@@ -206,24 +274,6 @@
 
     <div class="conteudo">
       
-     <!-- ==========================================
-           BARRA DE PESQUISA
-           ========================================== -->
-      <section style="margin-bottom: 20px; position: relative; z-index: 1;">
-        <div class="barra-busca-wrapper">
-          <span style="color: #999; font-size: 14px;">🔍︎</span>
-          <input type="text" id="barra-busca" placeholder="Buscar estilo ou produto...">
-          
-          <div class="divisor"></div>
-          
-          <select id="ordenar-produtos" class="select-embutido">
-            <option value="recentes">Mais Recentes</option>
-            <option value="menor-preco">Menor Preço</option>
-            <option value="maior-preco">Maior Preço</option>
-          </select>
-        </div>
-      </section>
-
       <!-- ==========================================
            FILTROS
            ========================================== -->
@@ -243,9 +293,36 @@
           </button>
         </div>
 
+       <div class="separador-filtros">
+          <span>Filtros Detalhados</span>
+        </div>
 
+         <!-- ==========================================
+           BARRA DE PESQUISA
+           ========================================== -->
+      <section style="margin-bottom: 20px; position: relative; z-index: 1;">
+        <div class="barra-busca-wrapper">
+          <span style="color: #999; font-size: 14px;">🔍︎</span>
+          <input type="text" id="barra-busca" placeholder="Buscar estilo ou produto...">
+          
+          <div class="divisor"></div>
+          
+          <select id="ordenar-produtos" class="select-embutido">
+            <option value="recentes">Mais Recentes</option>
+            <option value="menor-preco">Menor Preço</option>
+            <option value="maior-preco">Maior Preço</option>
+          </select>
+        </div>
+      </section>
 
-        <div style="display: flex; gap: 8px;">
+        <select id="filtro-categoria" class="select-personalizado" style="width: 100%; margin-bottom: 8px;">
+          <option value="todas">📦 Categorias (Todas)</option>
+          <option value="moda">👗 Moda & Vestuário</option>
+          <option value="casa">🏡 Casa & Decoração</option>
+          <option value="papelaria">📓 Papelaria Fofa</option>
+        </select>
+
+       <div id="container-subfiltros" style="display: none; gap: 8px;">
           <select id="filtro-peca" class="select-personalizado">
             <option value="todas">👖 Peças (Todas)</option>
           </select>
@@ -269,26 +346,49 @@
   <!-- ==========================================
        JAVASCRIPT
        ========================================== -->
-  <script>
+ <script>
     const achadinhos = [
-      { id: 1, titulo: "Look Dark Academia", loja: "shein", estilo: "Dark Academia", peca: "Look Completo", preco: "R$ 145,90", imagem: "https://via.placeholder.com/150", link: "#" },
-      { id: 2, titulo: "Bota Tratorada", loja: "shopee", estilo: "Grunge", peca: "Bota", preco: "R$ 89,90", imagem: "https://via.placeholder.com/150", link: "#" },
-      { id: 3, titulo: "Saia Plissada Rosa", loja: "shein", estilo: "Coquette", peca: "Saia", preco: "R$ 54,00", imagem: "https://via.placeholder.com/150", link: "#" },
-      { id: 4, titulo: "Conjunto Y2K", loja: "shopee", estilo: "Y2K", peca: "Look Completo", preco: "R$ 110,50", imagem: "https://via.placeholder.com/150", link: "#" },
-      { id: 5, titulo: "Jaqueta de Couro", loja: "shein", estilo: "Dark Academia", peca: "Jaqueta", preco: "R$ 199,90", imagem: "https://via.placeholder.com/150", link: "https://br.shein.com/DAZY-Women-s-Loose-Casual-Leather-Jacket%2C-Regular-Fit-Outerwear%2C-New-For-Autumn-Winter-p-561214210-cat-1735.html?campaign_id=20&url_from=affiliate_koc_4137664850&requestId=e068e968730227c2&ici=s1%60EditSearch%60RPD62S9%60_fb%60d1%60PageOthers&search_redir=1&search_words=RPD62S9&src_identifier=st%3D2%60sc%3DRPD62S9%60sr%3D0%60ps%3D1&src_module=search&src_tab_page_id=page_home1792207805542" }
-
+      { id: 1, titulo: "Look Dark Academia", loja: "shein", categoria: "moda", estilo: "Dark Academia", peca: "Look Completo", preco: "R$ 145,90", imagem: "https://9f8e62d4.delivery.rocketcdn.me/wp-content/uploads/2023/09/brown-tweed-blazer-white-Oxford-shirt-Scholarly-Classic-1.jpg", link: "#" },
+      { id: 2, titulo: "Bota Tratorada", loja: "shopee", categoria: "moda", estilo: "Grunge", peca: "Bota", preco: "R$ 89,90", imagem: "https://i.ebayimg.com/images/g/2E8AAeSwmqxqKyfc/s-l400.jpg", link: "#" },
+      { id: 3, titulo: "Saia Plissada Rosa", loja: "shein", categoria: "moda", estilo: "Coquette", peca: "Saia", preco: "R$ 54,00", imagem: "https://img.ltwebstatic.com/v4/j/pi/2026/04/24/67/1776997084fd09d0f1271397b1d69f6d0364229dc0_thumbnail_750x999.jpg", link: "#" },
+      { id: 4, titulo: "Bolsa Y2K Estrela", loja: "shopee", categoria: "moda", estilo: "Y2K", peca: "Bolsa", preco: "R$ 45,50", imagem: "https://www.neoncowboys.com/cdn/shop/files/star-crossbody-bag-neon-cowboys-bags-starpurseyellow-1221997_640x640.jpg?v=1775857574", link: "#" },
+      { id: 5, titulo: "Caneca de Gatinho", loja: "shopee", categoria: "casa", estilo: "Kawaii", peca: "Caneca", preco: "R$ 32,90", imagem: "https://http2.mlstatic.com/D_NQ_NP_693633-CBT89937207317_082025-O.webp", link: "#" },
+      { id: 6, titulo: "Tapete Xadrez", loja: "shein", categoria: "casa", estilo: "Minimalista", peca: "Tapete", preco: "R$ 78,00", imagem: "https://cdn.shopify.com/s/files/1/0691/8363/5772/files/Checkered_Rugs_1_600x600.jpg?v=1783352954", link: "#" },
+      { id: 7, titulo: "Luminária Cogumelo", loja: "shopee", categoria: "casa", estilo: "Vintage", peca: "Luminária", preco: "R$ 65,00", imagem: "https://www.antiquesboutique.com/upload/images/shopprod/197767/bohemian-impressive-large-glass-mushroom-lamp-circa-1930-40_197767_pic9_size1.jpg", link: "#" },
+      { id: 8, titulo: "Planner Aesthetic", loja: "shopee", categoria: "papelaria", estilo: "Aesthetic", peca: "Planner", preco: "R$ 49,90", imagem: "https://img.magnific.com/premium-photo/person-writing-down-new-years-resolutions-journal-clean-organized-desk-surrounded-by-motivational-decor-morning-light-calendar-planner-open-focused-expression_1311478-14997.jpg?semt=ais_hybrid&w=740&q=80", link: "#" },
+      { id: 9, titulo: "Kit Canetas Fofas", loja: "shein", categoria: "papelaria", estilo: "Cute", peca: "Caneta", preco: "R$ 15,50", imagem: "https://i.etsystatic.com/13103566/r/il/af7bf4/5783673157/il_570xN.5783673157_iuiz.jpg", link: "#" },
+      { id: 10, titulo: "Washi Tape Estrelas", loja: "shopee", categoria: "papelaria", estilo: "Minimalista", peca: "Washi Tape", preco: "R$ 12,00", imagem: "https://i.etsystatic.com/14317197/r/il/d8a57f/4986173920/il_fullxfull.4986173920_lxew.jpg", link: "#" }
     ];
 
-    const listaDeEstilos = ["Y2K", "Coquette", "Kawaii", "Fairycore", "Dark Academia", "Grunge"].sort();
-    const listaDePecas = ["Bota", "Calça", "Jorts", "Tênis", "Camiseta", "Blusinha", "Bolsa", "Saia", "Look Completo"].sort();
-
-    const selectEstilo = document.getElementById("filtro-estilo");
-    const selectPeca = document.getElementById("filtro-peca");
-
-    listaDeEstilos.forEach(estilo => selectEstilo.innerHTML += `<option value="${estilo.toLowerCase()}">${estilo}</option>`);
-    listaDePecas.forEach(peca => selectPeca.innerHTML += `<option value="${peca.toLowerCase()}">${peca}</option>`);
+    const opcoesPorCategoria = {
+      moda: {
+        tituloItens: "👖 Peças",
+        tituloEstilos: "✨ Estilos",
+        pecas: ["Bota", "Calça", "Jorts", "Tênis", "Camiseta", "Blusinha", "Bolsa", "Saia", "Look Completo"].sort(),
+        estilos: ["Y2K", "Coquette", "Kawaii", "Fairycore", "Dark Academia", "Grunge"].sort()
+      },
+      casa: {
+        tituloItens: "🛋️ Itens",
+        tituloEstilos: "🎨 Temas",
+        pecas: ["Caneca", "Tapete", "Luminária", "Quadro", "Roupa de Cama"].sort(),
+        estilos: ["Minimalista", "Vintage", "Boho", "Kawaii"].sort()
+      },
+      papelaria: {
+        tituloItens: "✏️ Produtos",
+        tituloEstilos: "✨ Estilos",
+        pecas: ["Caderno", "Caneta", "Adesivo", "Planner", "Washi Tape"].sort(),
+        estilos: ["Cute", "Minimalista", "Aesthetic"].sort()
+      }
+    };
 
     const vitrine = document.getElementById("vitrine-produtos");
+    const barraBusca = document.getElementById("barra-busca");
+    const selectOrdenar = document.getElementById("ordenar-produtos");
+    const selectCategoria = document.getElementById("filtro-categoria");
+    const selectPeca = document.getElementById("filtro-peca");
+    const selectEstilo = document.getElementById("filtro-estilo");
+    const containerSubfiltros = document.getElementById("container-subfiltros");
+    let lojaSelecionada = "todas";
 
     function renderizarProdutos(lista) {
       vitrine.innerHTML = ""; 
@@ -311,34 +411,56 @@
       });
     }
 
-    const barraBusca = document.getElementById("barra-busca");
-    const selectOrdenar = document.getElementById("ordenar-produtos");
-    let lojaSelecionada = "todas";
+    function atualizarSubfiltros() {
+      const categoria = selectCategoria.value;
 
-   function aplicarFiltros() {
+      if (categoria === "todas") {
+        containerSubfiltros.style.display = "none";
+        selectPeca.innerHTML = '<option value="todas">🛍️ Tudo (Todos)</option>';
+        selectEstilo.innerHTML = '<option value="todos">✨ Estilos (Todos)</option>';
+        return;
+      }
+
+      containerSubfiltros.style.display = "flex";
+
+      if (opcoesPorCategoria[categoria]) {
+        const tituloPeca = opcoesPorCategoria[categoria].tituloItens;
+        const tituloEstilo = opcoesPorCategoria[categoria].tituloEstilos;
+
+        selectPeca.innerHTML = `<option value="todas">${tituloPeca} (Todos)</option>`;
+        selectEstilo.innerHTML = `<option value="todos">${tituloEstilo} (Todos)</option>`;
+
+        opcoesPorCategoria[categoria].pecas.forEach(peca => {
+          selectPeca.innerHTML += `<option value="${peca.toLowerCase()}">${peca}</option>`;
+        });
+
+        opcoesPorCategoria[categoria].estilos.forEach(estilo => {
+          selectEstilo.innerHTML += `<option value="${estilo.toLowerCase()}">${estilo}</option>`;
+        });
+      }
+    }
+
+    function aplicarFiltros() {
       const texto = barraBusca.value.toLowerCase();
+      const categoriaSelecionada = selectCategoria.value;
       const peca = selectPeca.value;
       const estilo = selectEstilo.value;
-      const ordem = selectOrdenar.value; // Pega a ordem escolhida
+      const ordem = selectOrdenar.value; 
 
-      // Usa 'let' em vez de 'const' pois a lista será reordenada depois
       let produtosFiltrados = achadinhos.filter(produto => {
         const passaTexto = produto.titulo.toLowerCase().includes(texto);
-        
         const passaLoja = (lojaSelecionada === "todas") || 
                           (produto.loja === lojaSelecionada) || 
                           (lojaSelecionada === "looks" && produto.peca === "Look Completo");
-                          
+        const passaCategoria = (categoriaSelecionada === "todas") || (produto.categoria === categoriaSelecionada);
         const passaPeca = (peca === "todas") || (produto.peca.toLowerCase() === peca);
         const passaEstilo = (estilo === "todos") || (produto.estilo.toLowerCase() === estilo);
 
-        return passaTexto && passaLoja && passaPeca && passaEstilo;
+        return passaTexto && passaLoja && passaCategoria && passaPeca && passaEstilo;
       });
 
-      // LÓGICA DE ORDENAÇÃO
       if (ordem === "menor-preco") {
         produtosFiltrados.sort((a, b) => {
-          // Limpa o texto "R$ 145,90" para o número 145.90
           const precoA = parseFloat(a.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
           const precoB = parseFloat(b.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
           return precoA - precoB;
@@ -347,7 +469,7 @@
         produtosFiltrados.sort((a, b) => {
           const precoA = parseFloat(a.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
           const precoB = parseFloat(b.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
-          return precoB - precoA; // Invertido para maior preço
+          return precoB - precoA;
         });
       } else if (ordem === "recentes") {
         produtosFiltrados.reverse();
@@ -356,10 +478,18 @@
       renderizarProdutos(produtosFiltrados);
     }
 
+    atualizarSubfiltros();
+    renderizarProdutos(achadinhos);
+
     barraBusca.addEventListener("input", aplicarFiltros);
+    selectOrdenar.addEventListener("change", aplicarFiltros);
     selectPeca.addEventListener("change", aplicarFiltros);
     selectEstilo.addEventListener("change", aplicarFiltros);
-    selectOrdenar.addEventListener("change", aplicarFiltros);
+    
+    selectCategoria.addEventListener("change", () => {
+      atualizarSubfiltros();
+      aplicarFiltros();
+    });
 
     document.querySelectorAll(".btn-filtro").forEach(botao => {
       botao.addEventListener("click", (evento) => {
@@ -371,7 +501,13 @@
       });
     });
 
-    renderizarProdutos(achadinhos);
+    selectCategoria.addEventListener("change", () => {
+      lojaSelecionada = "todas";
+      document.querySelectorAll(".btn-filtro").forEach(b => b.classList.remove("ativo"));
+      document.querySelector('.btn-filtro[data-loja="todas"]').classList.add("ativo");
+      atualizarSubfiltros();
+      aplicarFiltros();
+    });
   </script>
 
 </body>

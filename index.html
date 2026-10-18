@@ -308,6 +308,7 @@
           <div class="divisor"></div>
           
           <select id="ordenar-produtos" class="select-embutido">
+            <option value="mais-vendidos">Mais Vendidos</option>
             <option value="recentes">Mais Recentes</option>
             <option value="menor-preco">Menor Preço</option>
             <option value="maior-preco">Maior Preço</option>
@@ -320,6 +321,7 @@
           <option value="moda">👗 Moda & Vestuário</option>
           <option value="casa">🏡 Casa & Decoração</option>
           <option value="papelaria">📓 Papelaria Fofa</option>
+          <option value="diversos">🧩 Diversos</option>
         </select>
 
        <div id="container-subfiltros" style="display: none; gap: 8px;">
@@ -346,19 +348,56 @@
   <!-- ==========================================
        JAVASCRIPT
        ========================================== -->
+ 
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>      
+       
  <script>
-    const achadinhos = [
-      { id: 1, titulo: "Look Dark Academia", loja: "shein", categoria: "moda", estilo: "Dark Academia", peca: "Look Completo", preco: "R$ 145,90", imagem: "https://9f8e62d4.delivery.rocketcdn.me/wp-content/uploads/2023/09/brown-tweed-blazer-white-Oxford-shirt-Scholarly-Classic-1.jpg", link: "#" },
-      { id: 2, titulo: "Bota Tratorada", loja: "shopee", categoria: "moda", estilo: "Grunge", peca: "Bota", preco: "R$ 89,90", imagem: "https://i.ebayimg.com/images/g/2E8AAeSwmqxqKyfc/s-l400.jpg", link: "#" },
-      { id: 3, titulo: "Saia Plissada Rosa", loja: "shein", categoria: "moda", estilo: "Coquette", peca: "Saia", preco: "R$ 54,00", imagem: "https://img.ltwebstatic.com/v4/j/pi/2026/04/24/67/1776997084fd09d0f1271397b1d69f6d0364229dc0_thumbnail_750x999.jpg", link: "#" },
-      { id: 4, titulo: "Bolsa Y2K Estrela", loja: "shopee", categoria: "moda", estilo: "Y2K", peca: "Bolsa", preco: "R$ 45,50", imagem: "https://www.neoncowboys.com/cdn/shop/files/star-crossbody-bag-neon-cowboys-bags-starpurseyellow-1221997_640x640.jpg?v=1775857574", link: "#" },
-      { id: 5, titulo: "Caneca de Gatinho", loja: "shopee", categoria: "casa", estilo: "Kawaii", peca: "Caneca", preco: "R$ 32,90", imagem: "https://http2.mlstatic.com/D_NQ_NP_693633-CBT89937207317_082025-O.webp", link: "#" },
-      { id: 6, titulo: "Tapete Xadrez", loja: "shein", categoria: "casa", estilo: "Minimalista", peca: "Tapete", preco: "R$ 78,00", imagem: "https://cdn.shopify.com/s/files/1/0691/8363/5772/files/Checkered_Rugs_1_600x600.jpg?v=1783352954", link: "#" },
-      { id: 7, titulo: "Luminária Cogumelo", loja: "shopee", categoria: "casa", estilo: "Vintage", peca: "Luminária", preco: "R$ 65,00", imagem: "https://www.antiquesboutique.com/upload/images/shopprod/197767/bohemian-impressive-large-glass-mushroom-lamp-circa-1930-40_197767_pic9_size1.jpg", link: "#" },
-      { id: 8, titulo: "Planner Aesthetic", loja: "shopee", categoria: "papelaria", estilo: "Aesthetic", peca: "Planner", preco: "R$ 49,90", imagem: "https://img.magnific.com/premium-photo/person-writing-down-new-years-resolutions-journal-clean-organized-desk-surrounded-by-motivational-decor-morning-light-calendar-planner-open-focused-expression_1311478-14997.jpg?semt=ais_hybrid&w=740&q=80", link: "#" },
-      { id: 9, titulo: "Kit Canetas Fofas", loja: "shein", categoria: "papelaria", estilo: "Cute", peca: "Caneta", preco: "R$ 15,50", imagem: "https://i.etsystatic.com/13103566/r/il/af7bf4/5783673157/il_570xN.5783673157_iuiz.jpg", link: "#" },
-      { id: 10, titulo: "Washi Tape Estrelas", loja: "shopee", categoria: "papelaria", estilo: "Minimalista", peca: "Washi Tape", preco: "R$ 12,00", imagem: "https://i.etsystatic.com/14317197/r/il/d8a57f/4986173920/il_fullxfull.4986173920_lxew.jpg", link: "#" }
-    ];
+    const { createClient } = supabase;
+    const supabaseUrl = 'https://irpfldgqddksijetljlw.supabase.co';
+    const supabaseKey = 'sb_publishable_r2CffinwhYBOMMdHQ1309w_qUueNNz2';
+    const banco = createClient(supabaseUrl, supabaseKey);
+
+    let achadinhos = [];
+
+      async function carregarProdutosDoBanco() {
+      console.log("⏳ Pedindo dados para o Supabase...");
+
+      window.registrarCliqueVenda = async function(idProduto, vendasAtuais) {
+      const totalAtual = vendasAtuais || 0; 
+      const novasVendas = totalAtual + 1;
+
+      console.log(`⏳ Mandando clique do produto ${idProduto} para a nuvem...`);
+
+      const { error } = await banco
+        .from('produtos')
+        .update({ vendas: novasVendas })
+        .eq('id', idProduto);
+
+      if (error) {
+        console.error("❌ Erro ao registrar o clique no banco:", error);
+      } else {
+        console.log(`✅ Produto ${idProduto} agora tem ${novasVendas} cliques!`);
+      }
+    };
+
+      const { data, error } = await banco.from('produtos').select('*');
+
+      if (error) {
+        console.error("❌ O Supabase bloqueou ou deu erro:", error);
+        return;
+      }
+
+      console.log("✅ Dados recebidos com sucesso:", data);
+
+      if (data && data.length > 0) {
+        achadinhos = data;
+        atualizarSubfiltros();
+        aplicarFiltros();
+      } else {
+        console.log("⚠️ A comunicação funcionou, mas o banco retornou uma lista vazia.");
+        vitrine.innerHTML = '<p style="grid-column: span 2; text-align: center;">Nenhum produto cadastrado no banco.</p>';
+      }
+    }
 
     const opcoesPorCategoria = {
       moda: {
@@ -378,6 +417,12 @@
         tituloEstilos: "✨ Estilos",
         pecas: ["Caderno", "Caneta", "Adesivo", "Planner", "Washi Tape"].sort(),
         estilos: ["Cute", "Minimalista", "Aesthetic"].sort()
+      },
+      diversos: {
+        tituloItens: "🛍️ Itens",
+        tituloEstilos: "✨ Estilos",
+        pecas: ["Acessório", "Beleza", "Presente", "Outros"].sort(),
+        estilos: ["Geral", "Outros"].sort()
       }
     };
 
@@ -405,7 +450,7 @@
             <h3 style="font-size: 13px; margin-bottom: 2px; line-height: 1.2;">${produto.titulo}</h3>
             <span style="font-size: 11px; color: var(--cor-texto-secundario); margin-bottom: 6px; text-transform: capitalize;">${produto.loja}</span>
             <span style="font-size: 14px; font-weight: bold; color: var(--cor-preco); margin-bottom: 10px; margin-top: auto;">${produto.preco}</span>
-            <a href="${produto.link}" target="_blank" rel="noopener noreferrer" style="background: var(--cor-primaria); color: white; text-align: center; padding: 8px; border-radius: 10px; text-decoration: none; font-size: 12px; font-weight: bold;">Comprar ↗</a>
+            <a href="${produto.link}" target="_blank" onclick="registrarCliqueVenda(${produto.id}, ${produto.vendas || 0})" rel="noopener noreferrer" style="background: var(--cor-primaria); color: white; text-align: center; padding: 8px; border-radius: 10px; text-decoration: none; font-size: 12px; font-weight: bold;">Comprar ↗</a>
           </div>
         `;
       });
@@ -448,49 +493,71 @@
       const ordem = selectOrdenar.value; 
 
       let produtosFiltrados = achadinhos.filter(produto => {
-        const passaTexto = produto.titulo.toLowerCase().includes(texto);
+        // Trava de segurança: Se o campo estiver vazio no Supabase, ele não trava o site!
+        const tituloProd = produto.titulo ? produto.titulo.toLowerCase() : "";
+        const pecaProd = produto.peca ? produto.peca.toLowerCase() : "";
+        const estiloProd = produto.estilo ? produto.estilo.toLowerCase() : "";
+
+        const passaTexto = tituloProd.includes(texto);
         const passaLoja = (lojaSelecionada === "todas") || 
                           (produto.loja === lojaSelecionada) || 
                           (lojaSelecionada === "looks" && produto.peca === "Look Completo");
         const passaCategoria = (categoriaSelecionada === "todas") || (produto.categoria === categoriaSelecionada);
-        const passaPeca = (peca === "todas") || (produto.peca.toLowerCase() === peca);
-        const passaEstilo = (estilo === "todos") || (produto.estilo.toLowerCase() === estilo);
+        const passaPeca = (peca === "todas") || (pecaProd === peca);
+        const passaEstilo = (estilo === "todos") || (estiloProd === estilo);
 
         return passaTexto && passaLoja && passaCategoria && passaPeca && passaEstilo;
       });
 
-      if (ordem === "menor-preco") {
+     if (ordem === "mais-vendidos") {
+        produtosFiltrados.sort((a, b) => (b.vendas || 0) - (a.vendas || 0));
+        
+      } else if (ordem === "menor-preco") {
         produtosFiltrados.sort((a, b) => {
-          const precoA = parseFloat(a.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
-          const precoB = parseFloat(b.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
+          const precoA = parseFloat((a.preco || "R$ 0").replace("R$ ", "").replace(".", "").replace(",", "."));
+          const precoB = parseFloat((b.preco || "R$ 0").replace("R$ ", "").replace(".", "").replace(",", "."));
           return precoA - precoB;
         });
+        
       } else if (ordem === "maior-preco") {
         produtosFiltrados.sort((a, b) => {
-          const precoA = parseFloat(a.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
-          const precoB = parseFloat(b.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
+          const precoA = parseFloat((a.preco || "R$ 0").replace("R$ ", "").replace(".", "").replace(",", "."));
+          const precoB = parseFloat((b.preco || "R$ 0").replace("R$ ", "").replace(".", "").replace(",", "."));
           return precoB - precoA;
         });
+        
       } else if (ordem === "recentes") {
-        produtosFiltrados.reverse();
+        // Usa a coluna adicionado-em para ordenar. Se não tiver, joga pro final.
+        produtosFiltrados.sort((a, b) => new Date(b['adicionado-em'] || 0) - new Date(a['adicionado-em'] || 0));
       }
 
       renderizarProdutos(produtosFiltrados);
     }
 
-    atualizarSubfiltros();
-    renderizarProdutos(achadinhos);
+    // ==========================================
+    // INICIALIZAÇÃO CORRETA E EVENTOS
+    // ==========================================
+    
+    // 1. O Tiro de Partida: Quando a página abre, puxa os dados e desenha tudo.
+    carregarProdutosDoBanco();
 
+    // 2. Os escutadores de eventos
     barraBusca.addEventListener("input", aplicarFiltros);
     selectOrdenar.addEventListener("change", aplicarFiltros);
     selectPeca.addEventListener("change", aplicarFiltros);
     selectEstilo.addEventListener("change", aplicarFiltros);
     
+    // Categoria: Unificado e otimizado
     selectCategoria.addEventListener("change", () => {
+      lojaSelecionada = "todas";
+      document.querySelectorAll(".btn-filtro").forEach(b => b.classList.remove("ativo"));
+      document.querySelector('.btn-filtro[data-loja="todas"]').classList.add("ativo");
+      
       atualizarSubfiltros();
       aplicarFiltros();
     });
 
+    // Botões Horizontais
     document.querySelectorAll(".btn-filtro").forEach(botao => {
       botao.addEventListener("click", (evento) => {
         document.querySelectorAll(".btn-filtro").forEach(b => b.classList.remove("ativo"));
@@ -499,14 +566,6 @@
         lojaSelecionada = evento.target.getAttribute("data-loja");
         aplicarFiltros();
       });
-    });
-
-    selectCategoria.addEventListener("change", () => {
-      lojaSelecionada = "todas";
-      document.querySelectorAll(".btn-filtro").forEach(b => b.classList.remove("ativo"));
-      document.querySelector('.btn-filtro[data-loja="todas"]').classList.add("ativo");
-      atualizarSubfiltros();
-      aplicarFiltros();
     });
   </script>
 

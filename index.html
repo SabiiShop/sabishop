@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SabiShop - Achadinhos</title>
+  
+    <title>SabiShop - Achadinhos</title>
+    <link rel="icon" href="fofa.png" type="image/jpeg">
   
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   
@@ -248,38 +250,89 @@
       border-color: var(--cor-analoga-hover); 
     }
 
+    .select-personalizado {
+      text-align: center;
+      text-align-last: center;
+    }
     
-
     /* ==========================================
        DESIGN RESPONSIVO (TABLETS E PCs)
        ========================================== */
     
-    /* Quando o ecrã for maior que 768px (Tablets e monitores pequenos) */
+  /* Quando o ecrã for maior que 768px (Tablets e PCs pequenos) */
     @media (min-width: 768px) {
       .app-container {
         max-width: 800px; /* Alarga a loja */
         border-radius: 20px;
         margin-top: 40px; /* Descola do topo da janela */
         margin-bottom: 40px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08); /* Sombra elegante no PC */
+      }
+
+      /* 1. Proporções do Cabeçalho - Ajustados! */
+      .banner {
+        height: 240px; /* Aumenta a altura para não achatar nem dar zoom estranho */
+        background-position: center; /* Centraliza a imagem no banner */
+        border-radius: 20px 20px 0 0;
       }
 
       .cabecalho {
         border-radius: 20px 20px 0 0;
+        margin-top: -36px; /* Ajusta a transição com o banner maior */
       }
 
+      /* Foto maior e proporcional ao PC */
+      .foto-perfil {
+        width: 140px;
+        height: 140px;
+        margin-top: -85px; /* Sobe a foto na medida certa para o novo tamanho */
+        border: 5px solid var(--cor-fundo);
+      }
+
+      .cabecalho h1 {
+        font-size: 38px; /* Aumenta o título SabiShop */
+      }
+
+      .cabecalho p {
+        font-size: 15px; /* Aumenta o slogan */
+      }
+
+      /* 2. Reposicionamento dos Enfeites (para não irem para longe) */
+      .e1 { left: 20%; top: 32px; width: 22px; }
+      .e2 { left: 32%; top: 25px; width: 30px; }
+      .e3 { right: 32%; top: 25px; width: 30px; }
+      .e4 { right: 20%; top: 36px; width: 22px; }
+
+      /* Passa a grelha de 2 para 3 produtos lado a lado */
       #vitrine-produtos {
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 20px !important;
       }
     }
 
-    /* Quando for um monitor ainda maior (pc) */
+    /* Quando for um monitor ainda maior (PCs de secretária) */
     @media (min-width: 1024px) {
       .app-container {
         max-width: 1000px;
       }
 
+      /* Aumenta ainda mais o banner e o perfil para telas de cinema */
+      .banner {
+        height: 280px;
+      }
+
+      .foto-perfil {
+        width: 155px;
+        height: 155px;
+        margin-top: -90px;
+      }
+
+      .e1 { left: 24%; }
+      .e2 { left: 34%; }
+      .e3 { right: 34%; }
+      .e4 { right: 24%; }
+
+      /* Passa a grelha para 4 produtos lado a lado */
       #vitrine-produtos {
         grid-template-columns: repeat(4, 1fr) !important;
       }
